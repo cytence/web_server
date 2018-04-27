@@ -1,0 +1,24 @@
+function User(user){
+		this.usertype = user.usertype;
+    this.username = user.username;
+    this.userpass = user.userpass;
+    User.prototype.save = function save(callback) {
+        var user = {
+        		usertype: this.usertype,
+            username: this.username,
+            userpass: this.userpass
+        };
+
+        var cmd = "INSERT INTO userinfo(id, username, userpass) VALUES(0,?,?,?)";
+
+        connection.query(cmd, [user.username, user.userpass], function (err,result) {
+            if (err) {
+            		console.log("reg admin error occur in write database");
+                return;
+            }
+
+            connection.release();
+            callback(err,result);                     
+        });       
+    };
+};

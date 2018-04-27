@@ -1,0 +1,5 @@
+module.exports = {
+	FixStr : function(str){
+		return str.replace(/\'/g,"\\'");
+	}
+};

@@ -1,0 +1,111 @@
+var express = require('express');
+var router = express.Router();
+var ch_util = require('../util/ch_util');
+
+router.get('/', function(req ,res){
+	req.session.reg_begin = true;
+	res.sendFile(path.join(__dirname, '../public', 'reg_user.html'));
+}
+);
+
+router.get('/redirect', function (req, res){
+	res.redirect('/reg_proc');
+});
+
+
+router.get('/get_error' ,function(req, res)
+{
+	if(req.session.reg_begin)
+	{
+		var name_error = req.session.reg_user_name_error;
+		var password_error = req.session.reg_user_password_error;
+		var username_remain = req.session.reg_username_remain;
+		var groupname_remain = req.session.reg_groupname_remain;
+		delete req.session.reg_user_name_error;
+		delete req.session.reg_user_password_error;
+		delete req.session.reg_username_remain;
+		delete req.session.reg_groupname_remain;
+		res.json({name_error : name_error, username_remain : username_remain, groupname_remain : groupname_remain, password_error : password_error});
+	}
+	else
+		res.json();
+}
+);
+
+router.get('/get_reg_name', function (req, res){
+	if(req.session.reg_user_name)
+	{
+		var user_name = req.session.reg_user_name;
+		delete req.session.reg_user_name;
+		res.json({reg_user_name : user_name});
+	}
+	else
+		res.json();
+}
+);
+
+router.get('/reg_success', function (req, res){
+	if(req.session.reg_user_name)
+	{
+		delete req.session.reg_begin;
+		res.sendFile(path.join(__dirname, '../public', 'reg_success.html'));
+	}
+	else
+	{
+		res.redirect("/");
+	}
+}
+);
+
+router.post('/reg_user', function (req ,res){
+	var user_name = req.body.user_name;
+	user_name = ch_util.FixStr(user_name);
+	var group_name = req.body.group_name;
+	//group_name = ch_util.FixStr(group_name);
+	var password = req.body.password;
+	password = ch_util.FixStr(password);
+	var password_again = req.body.password_again;
+	password_again = ch_util.FixStr(password_again);
+	var cmd = "SELECT * FROM users WHERE find_in_set(user_name, '" + user_name +"')";
+	if(req.session.reg_begin)
+	{
+		conn.query(cmd, function(err, rows, fields){
+		if(!rows.length)
+		{
+			if(password != password_again)
+			{
+				//password is not match
+				req.session.reg_user_password_error = 'Password and retype password is not same!';
+				req.session.reg_username_remain = user_name;
+				req.session.reg_groupname_remain = group_name;
+				res.redirect('/reg_proc');
+			}
+			else
+			{
+				cmd = "INSERT INTO users (user_type, user_name, password, group_name, is_login)" +
+				"VALUES ('user','" + user_name + "' ,'" + password +"' ,'"+ group_name + "' ,0)";
+				conn.query(cmd, function (err, rows, fields){
+					if(err)
+					 console.log("register user error occur");
+					else
+					{
+						req.session.reg_user_name = user_name;
+						res.end('Register success!');
+					}
+				}
+				);
+			}			
+		}
+		else
+		{
+			req.session.reg_user_name_error = 'This user is already exist!';
+			req.session.reg_username_remain = user_name;
+			req.session.reg_groupname_remain = group_name;
+			res.redirect('/reg_proc');
+		}
+	});
+	}
+}
+);
+
+module.exports = router;

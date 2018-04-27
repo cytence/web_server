@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Groupdata</title>
+<style>
+	body
+	{
+		font-family : Microsoft JhengHei;
+		background-color : white;
+	}
+	hr
+	{
+		border-width : 2px;
+		border-color : #0077CC;
+		border-style : solid;
+	}
+	label
+	{
+		font-size : 20px;
+	}
+	.chs_title
+	{
+		background-color : rgba(0,0,0,0.4);
+		color : #0077CC;
+		font-size : 40px;
+		
+	}
+	.client_area
+	{
+		position : fixed;
+		z-index: 1;
+		left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: hidden; /* disable scroll */
+    background-color : rgba(0,0,0,0);
+	}
+	#caption
+	{
+		position : fixed;
+		left : 0px;
+		top : 0px;
+		width : 100%;
+		height : 60px;
+	}
+	.panel
+	{
+		position : absolute;
+		left : 5px;
+		top : 90px;
+		width : 800px;
+		height : 640px;
+		background-color : rgba(0,0,0,0);
+		border-style : solid;
+		border-width : 2px;
+		border-radius: 20px;
+		border-color : #0077CC;
+	}
+	.sysbtn
+	{
+		background-color: rgba(0,0,0,0);
+		border: none;
+	}
+	.sysbtn:hover
+	{
+		background-color: rgba(0,0,0,0.4);
+	}
+	#userdata_form
+	{
+		position : absolute;
+		left : 0px;
+		top : 0px;
+		width : 700px;
+		height : 540px;
+		background-color : rgba(0,0,0,0);
+	}
+	.chs_edit
+	{
+		border-width : 2px;
+		border-color : #0077CC;
+		border-style : solid;
+		height : 30px;
+		font-size : 20px;
+	}
+	.chs_edit:disabled
+	{
+		background-color : rgba(0,0,0,0.4);
+		color : #0077CC;
+	}
+	.chs_edit:enabled
+	{
+		background-color : rgba(0,0,0,0);
+		color : black;
+	}
+	#admin_edit
+	{
+		position : absolute;
+		left : 10px;
+		top : 40px;
+		width : 320px;
+	}
+	#admin_label
+	{
+		position : absolute;
+		left : 10px;
+		top : 10px;
+		height : 30px;
+	}
+	#phone_num_label
+	{
+		position : absolute;
+		left : 340px;
+		top : 10px;
+		height : 30px;
+	}
+	#phone_num_edit
+	{
+		position : absolute;
+		left : 340px;
+		top : 40px;
+		height : 30px;
+		width : 320px;
+	}
+	#email_addr_label
+	{
+		position : absolute;
+		left : 10px;
+		top : 100px;
+		height : 30px;
+	}
+	#email_addr_edit
+	{
+		position : absolute;
+		left : 10px;
+		top : 130px;
+		width : 650px;
+		height : 30px;
+	}
+	#alter_btn
+	{
+		position : absolute;
+		left : 730px;
+		top : 40px;
+		width : 30px;
+		height : 30px;
+		background-image : url('/img/pen_icon');
+		background-size : cover;
+		border-width : 0px;
+		border-color : #0077CC;
+		border-style : solid;
+		outline: none;
+	}
+	#alter_btn:hover
+	{
+		opacity : 0.5;
+	}
+	#submit_btn
+	{
+		position : absolute;
+		left : 10px;
+		top : 200px;
+		width : 200px;
+		height : 30px;
+		color : white;
+		background-color : #0077CC;
+		border-width : 0px;
+		box-shadow : 5px 5px 5px rgba(0,0,0,0.4);
+	}
+	#submit_btn:hover
+	{
+		opacity : 0.5;
+	}
+	#modified_time_tag
+	{
+		position : absolute;
+		left : 10px;
+		top : 600px;
+		color : #0077CC;
+		width : 100%;
+		height : 30px;
+		font-size : 20px;
+	}
+</style>
+</head>
+<body onload="InitPage()">
+<div class="client_area">
+	<div class="chs_title" id="caption">Groupdata<hr></div>
+	<div class="panel">
+		<button id="alter_btn" onclick="AlterBtnOnClicked()">&nbsp</button>
+		<form id="groupdata_form" action="" method="POST">
+			<label for="admin_edit" id="admin_label">Admin</label>
+			<input class="chs_edit" id="admin_edit" type="text" name="admin_name" form="groupdata_form" maxlength="256" placeholder="No data">
+			
+			
+			<label for="phone_num_edit" id="phone_num_label">Phone number</label>
+			<input class="chs_edit" id="phone_num_edit" type="text" name="phone_num" form="groupdata_form" maxlength="256" placeholder="No data">
+			<label for="email_addr_edit" id="email_addr_label">Email</label>
+			<input class="chs_edit" id="email_addr_edit" type="text" name="email_addr" form="groupdata_form" maxlength="256" placeholder="No data">
+			<button id="submit_btn" type="submit">Modify data</button>
+		</form>
+		<div id="modified_time_tag"></div>
+	</div>
+</div>
+<script>
+	function HttpGetAsync(theUrl, callback)
+	{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send();
+	}
+	function GetUserData(res)
+	{
+		if(res)
+		{
+			var ud_obj = JSON.parse(res);
+			if(ud_obj.last_modified_time)
+			{
+				document.getElementById('modified_time_tag').innerHTML = "Last modified time : " + ud_obj.last_modified_time;
+				if(ud_obj.real_name)
+					document.getElementById('real_name_edit').value = ud_obj.real_name;
+				if(ud_obj.phone_number)
+					document.getElementById('phone_num_edit').value = ud_obj.phone_number;
+				if(ud_obj.email)
+					document.getElementById('email_addr_edit').value = ud_obj.email;
+			}
+		}
+	}
+	function DisableAllEdit()
+	{
+		document.getElementById('real_name_edit').disabled = true;
+		document.getElementById('phone_num_edit').disabled = true;
+		document.getElementById('email_addr_edit').disabled = true;
+		document.getElementById('submit_btn').style.visibility = "hidden";
+	}
+	function EnableAllEdit()
+	{
+		document.getElementById('real_name_edit').disabled = false;
+		document.getElementById('phone_num_edit').disabled = false;
+		document.getElementById('email_addr_edit').disabled = false;
+		document.getElementById('submit_btn').style.visibility = "visible";
+	}
+	function InitPage()
+	{
+		DisableAllEdit();
+		HttpGetAsync('/user_page/get_userdata',GetUserData);
+	}
+	function AlterBtnOnClicked()
+	{
+		if(document.getElementById('real_name_edit').disabled)
+		{
+			EnableAllEdit();
+			document.getElementById('alter_btn').style.borderWidth = "2px";
+		}
+		else
+		{
+			DisableAllEdit();
+			document.getElementById('alter_btn').style.borderWidth = "0px";
+		}
+	}
+</script>
+</body>
+</html>

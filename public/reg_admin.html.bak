@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body
+{
+	font-family:Microsoft JhengHei;
+	background-image:url("http://localhost:3000/img/default_bg");
+	background-size:cover;
+}
+.panel{
+	position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+.panel_content
+{
+	background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+.box_caption
+{
+	text-align: center;
+	font-weight:bold;
+	color:#0050fa;
+}
+</style>
+</head>
+<body>
+	<div class="panel">
+		<form class="panel_content" role="form" method="post" action="/reg_admin/reg_proc">
+    <h2 class="box_caption">Register</h2>
+
+    <input id="txtUserName" name="admin_name" type="text" class="form-control" placeholder="帳號" required />
+    <input id="txtUserPwd" name="admin_pwd" type="password" class="form-control" placeholder="密碼" required/>
+    <input id="txtUserRePwd"  name="admin_re_pwd" type="password" class="form-control" placeholder="再輸入密碼" required/>  
+
+    <button id="btnSub" class="btn btn-lg btn-primary" type="submit">Register</button>
+</form> 
+		
+	</div> 
+</body>
+
+

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="shortcut icon" type="image/x-icon" href="/img/default_icon" />
+<title>NKUST administrator</title>
+<style>
+	body
+	{
+		font-family:Microsoft JhengHei;
+		background-image:url("/img/default_bg");
+		background-size:cover;
+	}
+	p
+	{
+		margin-top : 0;
+		margin-bottom : 0;
+	}
+	.client_area 
+	{
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: hidden; /* disable scroll */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	}
+	#user_btn
+	{
+		position: fixed;
+		right: 100px;
+		height:50px;
+		width:120px;
+		top:5px;
+		font-size:22px;
+		font-weight:bold;
+		color:#0077cc;
+	}
+	#user_btn_img
+	{
+		position: absolute;
+		left : 5px;
+		height: 40px;
+		width : 40px;
+		top : 5px;
+		background-image : url("/img/user_icon");
+		background-size : cover;
+		
+	}
+	#user_btn_name
+	{
+		position : absolute;
+		left : 50px;
+		top : 5px;
+		height : 40px;
+		width : 60px;
+		margin-top : 0px;
+		margin-bottom : 0px; 
+		
+		line-height: 40px;
+	}
+	#logoff_btn
+	{
+		position: fixed;
+		right:20px;
+		height:50px;
+		width:70px;
+		top:5px;
+	}
+	.sysbtn
+	{
+		background-color: rgba(0,0,0,0);
+		border: none;
+	}
+	.sysbtn:hover
+	{
+		background-color: rgba(0,0,0,0.4);
+	}
+	.chs_caption
+	{
+		position: fixed;
+		margin-left: 0px;
+    margin-top: 0px;
+    top:0;
+    left:0;
+    height:60px;
+    background-color:white;
+    width:100%;
+    color:black;
+    z-index : 2;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    font-weight:bold;
+	}
+	.chs_userpanel_shadow
+	{
+		position: absolute;
+		z-index:10;
+		box-shadow:30px 30px 50px rgba(0,0,0,1);
+		background-color:white;
+	}
+	#userdata_popup
+	{
+		top:60px;
+		right:20px;
+		width:250px;
+		height:150px;
+		visibility:hidden;
+	}
+	.chs_shadow_title
+	{
+		font-size:28px;
+		font-weight:bold;
+		color:#0077cc;
+		margin-top:0;
+		margin-bottom:0;
+	}
+	#caption_icon
+	{
+		position:absolute;
+		width:40px;
+		height:30px;
+		top:15px;
+		left:20px;
+		background-image:url("/img/default_icon");
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+	#caption_title
+	{
+		position : absolute;
+		height : 40px;
+		width : 256px;
+		top: 10px;
+		left : 70px;
+		margin-top:0;
+		margin-bottom:0;
+		line-height: 40px;
+	}
+	#udp_pp_icon
+	{
+		position:absolute;
+		width:60px;
+		height:60px;
+		top:10px;
+		left:10px;
+		background-image:url("/img/user_icon");
+		background-size: cover;
+	}
+	#udp_pp_title
+	{
+		position:absolute;
+		height :40px;
+		width : 100px;
+		top:10px;
+		left: 100px;
+		
+	}
+	#udp_pp_description
+	{
+		position:absolute;
+		height :40px;
+		width : 100px;
+		top:55px;
+		left: 110px;
+	}
+	#udp_pp_btn_container
+	{
+		position : absolute;
+		height : 40px;
+		width : 100%;
+		left : 0;
+		top : 110px;
+		background-color : #bbbbbb;
+		
+	}
+	.udp_pp_btn
+	{
+		position : absolute;
+		height : 30px;
+		width : 80px;
+		top : 5px;
+		left : 10px;
+		border: 2px solid rgba(0,0,0,0.24);
+		box-shadow:5px 5px 5px rgba(0,0,0,0.4);
+	}
+	#udp_pp_logoff_btn
+	{
+		position : absolute;
+		height : 30px;
+		width : 80px;
+		top : 5px;
+		left : 10px;
+	}
+	#udp_pp_close_btn
+	{
+		position : absolute;
+		height : 30px;
+		width : 80px;
+		top : 5px;
+		left : 100px;
+	}
+	.side_panel
+	{
+		position : absolute;
+		height : 100%;
+		width : 256px;
+		background-color : white;
+		top : 60px;
+		left : 0px;
+	}
+	#sp_admin_panel
+	{
+		position : absolute;
+		height : 320px;
+		left : 10px;
+		top : 50px;
+		width : 236px;
+	}
+	#sp_user_panel
+	{
+		position : absolute;
+		height : 320px;
+		left : 10px;
+		top : 380px;
+		width : 236px;
+	}
+	.sp_hr
+	{
+		border-style: solid;
+    border-color: #0077CC;
+    margin-bottom : 0;
+	}
+	#sp_admin_title
+	{
+		position : absolute;
+		height : 40px;
+		width : 100%;
+		left : 0;
+		top: 0;
+	}
+	#sp_user_title
+	{
+		position : absolute;
+		height : 40px;
+		width : 100%;
+		left : 0;
+		top : 0;
+	}
+	.sp_btn
+	{
+		text-align : left;
+		font-weight : bold;
+		color : #505050;
+	}
+	#sp_admin_reg_btn
+	{
+		position : absolute;
+		height : 30px;
+		width : 100%;
+		left : 0;
+		top : 125px;
+	}
+	#sp_admin_broadcast_btn
+	{
+		position : absolute;
+		height : 30px;
+		width : 100%;
+		left : 0;
+		top: 45px;
+	}
+	#sp_admin_groupdata_btn
+	{
+		position : absolute;
+		height : 30px;
+		width : 100%;
+		left : 0;
+		top: 85px;
+	}
+	#sp_user_userdata_btn
+	{
+		position : absolute;
+		left : 0px;
+		top : 45px;
+		width : 100%;
+		height : 30px;
+	}
+	#sp_close_client_view_btn
+	{
+		position : absolute;
+		height : 60px;
+		width : 236px;
+		left : 10px;
+		top : 600px;
+		border-width : 2px;
+		border-color : #0077CC;
+		font-weight : bold;
+		background-color : rgba(0,0,0,0);
+		border-style :solid;
+		font-size : 20px;
+	}
+	#sp_close_client_view_btn:hover
+	{
+		border-color : #00ffff;
+		background-color: rgba(0,0,0,0.4);
+		box-shadow:5px 5px 5px rgba(0,0,0,0.4);
+	}
+	.client_view
+	{
+		position : fixed;
+		height : 100%;
+		width : 100%;
+		left : 256px;
+		top : 60px;
+		background-color : rgba(0,0,0,0);
+	}
+	#cv_container
+	{
+		position : absolute;
+		visibility : hidden;
+    margin-left: 20px;
+    margin-top: 20px;
+		background-color : white;
+		width : 100%;
+		height : 100%;
+		box-shadow:5px 5px 5px rgba(0,0,0,0.4);
+		border-width : 0px;
+	}
+	/* Add Zoom Animation */
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+}
+    
+@keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}
+</style>
+</head>
+<body onload="InitAdminPage()">
+
+<div class="client_area animate">
+	<div class="chs_caption">
+		<div id="caption_icon">&nbsp</div>
+		<p id="caption_title">NKUST administrator</p>
+		<button class="sysbtn" id="user_btn" onclick="UserBtnClickedHandler()">
+			<div id="user_btn_img">&nbsp</div>
+			<p id="user_btn_name"></p>
+			</button>
+		<form action="/login_proc/logoff" target="_self">
+  		<button class="sysbtn" id="logoff_btn" type="submit">Logoff</button>
+		</form>
+	</div>
+	<div class="side_panel">
+		<div id="sp_admin_panel">
+			<div id="sp_admin_title">Admin<hr class="sp_hr"></div>
+			<button class="sysbtn  sp_btn" id="sp_admin_reg_btn" onclick="ChangeClientPage(0)">Register admin</button>
+			<button class="sysbtn  sp_btn" id="sp_admin_groupdata_btn" onclick="">Groupdata</button>
+			<button class="sysbtn  sp_btn" id="sp_admin_broadcast_btn" onclick="ChangeClientPage(1)">Broadcast</button>
+		</div>
+		<div id="sp_user_panel">
+			<div id="sp_user_title">User<hr class="sp_hr"></div>
+			<button class="sysbtn sp_btn" id="sp_user_userdata_btn" onclick="ChangeClientPage(2)">Userdata</button>
+		</div>
+		<button id="sp_close_client_view_btn" onclick="CloseClientView()">Close client view</button>
+	</div>
+	<div class="client_view">
+		<iframe id="cv_container" src="">&nbsp</iframe>
+	</div>
+</div>
+
+<div class="chs_userpanel_shadow" id="userdata_popup">
+	<div id="udp_pp_icon">
+		&nbsp
+	</div>
+	<p class="chs_shadow_title" id="udp_pp_title"></p>
+	<p id="udp_pp_description"></p>
+	<div id = "udp_pp_btn_container">
+		<form action="/login_proc/logoff" target="_self">
+  		<button class="sysbtn udp_pp_btn" id="udp_pp_logoff_btn" type="submit">Logoff</button>
+		</form>
+		<button class="sysbtn udp_pp_btn" id="udp_pp_close_btn" onclick="CloseUserdataPanel()">Close</button>
+	</div>
+</div>
+
+<script>
+	var page_index_table = ["/admin_page/register_admin","/admin_page/broadcast","/user_page"];
+	function makeStruct(names)
+	{
+ 	 	var names = names.split(' ');
+  	var count = names.length;
+  	function constructor() 
+  	{
+    	for (var i = 0; i < count; i++) 
+    	{
+      	this[names[i]] = arguments[i];
+    	}
+  	}
+  	return constructor;
+	}
+
+	var CUSERDATA = makeStruct("usertype username groupname");
+	var uds;
+	function HttpGetAsync(theUrl, callback)
+	{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send();
+	}
+	function GetUserData(userdata)
+	{
+		var userdata_obj = JSON.parse(userdata);
+		if(userdata_obj)
+		{
+			uds = new CUSERDATA(userdata_obj.ud_array[0], userdata_obj.ud_array[1], userdata_obj.ud_array[2]);
+			document.getElementById("user_btn_name").innerHTML = uds.username; 
+			document.getElementById("udp_pp_title").innerHTML = uds.username;
+			document.getElementById("udp_pp_description").innerHTML = 'Group: '+uds.groupname;
+			console.log("usertype = " + uds.usertype);
+			console.log("username = " + uds.username);
+			if(uds.groupname != 'root' || uds.username != 'root')
+			{
+				//console.log('admin_btn hide');
+				document.getElementById('sp_admin_reg_btn').style.visibility = 'hidden';
+			}
+		}
+		
+	}
+	function UserBtnClickedHandler()
+	{
+		document.getElementById("userdata_popup").style.visibility = "visible";
+		//document.getElementById("userdata_popup").focus();
+	}
+	function InitAdminPage()
+	{
+		HttpGetAsync("/login_proc/get_userdata",GetUserData);
+	}
+	function CloseUserdataPanel()
+	{
+		document.getElementById("userdata_popup").style.visibility = "hidden";
+	}
+	function ChangeClientPage(page_index)
+	{
+		if(page_index < page_index_table.length)
+		{
+			document.getElementById('cv_container').style.visibility = "visible";
+			document.getElementById('cv_container').src = page_index_table[page_index];
+		}
+	}
+	function CloseClientView()
+	{
+		document.getElementById('cv_container').style.visibility = "hidden";
+	}
+</script>
+
+</body>
+</html>
